@@ -1,5 +1,6 @@
 package com.nagopy.multiplatform.sandbox
 
+import androidx.compose.ui.window.ComposeUIViewController
 import platform.UIKit.UIDevice
 
 class IOSPlatform: Platform {
@@ -7,3 +8,7 @@ class IOSPlatform: Platform {
 }
 
 actual fun getPlatform(): Platform = IOSPlatform()
+
+@Suppress("unused", "FunctionName")
+fun HorizontalScrollRowViewController() = ComposeUIViewController { HorizontalScrollRow() }
+
