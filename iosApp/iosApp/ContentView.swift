@@ -50,10 +50,7 @@ class CustomTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.row == sharedViewIndex {
-            return 100
-        }
-        return 44.0  // 通常のセルの高さ
+        return 80
     }
 }
 
