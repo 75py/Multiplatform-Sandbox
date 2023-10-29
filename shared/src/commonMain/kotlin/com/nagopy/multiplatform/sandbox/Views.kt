@@ -21,7 +21,6 @@ import androidx.compose.ui.unit.dp
 fun HorizontalScrollRow(rowIds: List<Int> = IntRange(0, 20).toList()) {
     LazyRow(
         modifier = Modifier
-            .horizontalScroll(rememberScrollState())
             .padding(16.dp)
             .width(300.dp)
             .height(100.dp)
