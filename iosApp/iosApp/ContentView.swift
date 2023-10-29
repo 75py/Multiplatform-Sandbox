@@ -4,8 +4,8 @@ import UIKit
 
 class CustomTableViewController: UITableViewController {
     
-    private let numOfRows = 100 // 最大行数
-    private let sharedViewIndex = 1 // sharedのビューを挿入する位置（0始まり）
+    private let numOfRows = 100
+    private let sharedViewIndex = 19
     private let sharedViewIdentifier = "shared_cell"
     private var cachedHostingControllers: [Int: UIHostingController<HorizontalScrollRowViewControllerWrapper>] = [:]
 
@@ -29,15 +29,12 @@ class CustomTableViewController: UITableViewController {
                 let hostVC = UIHostingController(rootView: HorizontalScrollRowViewControllerWrapper())
                 cachedHostingControllers[indexPath.row] = hostVC
                 
-                // 子ViewControllerとして追加
                 self.addChild(hostVC)
                 hostVC.didMove(toParent: self)
                 
-                // サイズと位置を設定
                 hostVC.view.frame = cell.contentView.bounds
                 hostVC.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
                 
-                // セルにビューを追加
                 cell.contentView.addSubview(hostVC.view)
             }
             return cell
@@ -54,7 +51,6 @@ class CustomTableViewController: UITableViewController {
     }
 }
 
-// UITableViewControllerをSwiftUIで使用するためのラッパー
 struct TableViewControllerWrapper: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> CustomTableViewController {
         return CustomTableViewController()
