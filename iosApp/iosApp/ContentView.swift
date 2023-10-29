@@ -5,11 +5,15 @@ import UIKit
 class CustomTableViewController: UITableViewController {
     
     private let numOfRows = 100 // 最大行数
-    private let sharedViewIndex = 29 // sharedのビューを挿入する位置（0始まり）
+    private let sharedViewIndex = 1 // sharedのビューを挿入する位置（0始まり）
+    private let sharedViewIdentifier = "shared_cell"
+    private var cachedHostingControllers: [Int: UIHostingController<HorizontalScrollRowViewControllerWrapper>] = [:]
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: sharedViewIdentifier)
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -17,33 +21,32 @@ class CustomTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        
-        // すべてのサブビューを削除して、再利用されたセルに古いビューが表示されないようにする
-        for subview in cell.contentView.subviews {
-            subview.removeFromSuperview()
-        }
-        cell.textLabel?.text = ""
-        
         // {sharedViewIndex}番目のセルにHorizontalScrollRowViewControllerWrapperを表示
         if indexPath.row == sharedViewIndex {
-            let hostVC = UIHostingController(rootView: HorizontalScrollRowViewControllerWrapper())
-            
-            // 子ViewControllerとして追加
-            self.addChild(hostVC)
-            hostVC.didMove(toParent: self)
-            
-            // サイズと位置を設定
-            hostVC.view.frame = cell.contentView.bounds
-            hostVC.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-            
-            // セルにビューを追加
-            cell.contentView.addSubview(hostVC.view)
+            let cell = tableView.dequeueReusableCell(withIdentifier: sharedViewIdentifier, for: indexPath)
+            let cachedVC = cachedHostingControllers[indexPath.row]
+            if cachedVC == nil {
+                let hostVC = UIHostingController(rootView: HorizontalScrollRowViewControllerWrapper())
+                cachedHostingControllers[indexPath.row] = hostVC
+                
+                // 子ViewControllerとして追加
+                self.addChild(hostVC)
+                hostVC.didMove(toParent: self)
+                
+                // サイズと位置を設定
+                hostVC.view.frame = cell.contentView.bounds
+                hostVC.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+                
+                // セルにビューを追加
+                cell.contentView.addSubview(hostVC.view)
+            }
+            return cell
         } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
             cell.textLabel?.text = "Row \(indexPath.row + 1)"
+            
+            return cell
         }
-        
-        return cell
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
