@@ -5,7 +5,7 @@ compose = "1.5.4"
 compose-plugin = "1.5.10-rc02"
 compose-compiler = "1.5.3"
 compose-material3 = "1.1.2"
-androidx-activityCompose = "1.7.2"
+androidx-activityCompose = "1.8.2"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
