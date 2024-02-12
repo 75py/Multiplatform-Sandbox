@@ -1,9 +1,9 @@
 [versions]
 agp = "8.2.2"
-kotlin = "1.9.10"
+kotlin = "1.9.21"
 compose = "1.6.1"
-compose-plugin = "1.5.10-rc02"
-compose-compiler = "1.5.3"
+compose-plugin = "1.5.11"
+compose-compiler = "1.5.7"
 compose-material3 = "1.2.0"
 androidx-activityCompose = "1.8.2"
 
